@@ -1,35 +1,72 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [inputData, setInputData] = useState('');
+  const [todoItem, setTodoItem] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentTodoId, setCurrentTodoId] = useState(null);
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    if (!inputData.trim())
+      return;
+
+    if (isEditing) {
+      setTodoItem(todoItem.map((item) => item.id === currentTodoId ? { ...item, todo: inputData } : item))
+      setIsEditing(false)
+      setCurrentTodoId(null)
+    } else {
+      const newTodo = {
+        id: todoItem.length + 1,
+        todo: inputData
+      }
+      setTodoItem([...todoItem, newTodo]);
+
+    }
+
+    setInputData('')
+
+  }
+
+  const deleteTodo = (id) => {
+    const removeItem = todoItem.filter((todo) => {
+      return todo.id !== id;
+    })
+    setTodoItem(removeItem)
+  }
+
+  const handleEdit = (id) => {
+    const todoToEdit = todoItem.find((todo) => todo.id === id)
+    setInputData(todoToEdit.todo)
+    setIsEditing(true)
+    setCurrentTodoId(id);
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className='app'>
+
+      <div className='heading'><h1>TODO CRUD</h1></div>
+      <div className='todo-form'>
+        <form onSubmit={handleFormSubmit}>
+          <input type="text" placeholder='Enter your todo' value={inputData} onChange={(e) => setInputData(e.target.value)} />
+          <button type='submit'>{isEditing ? "Update Todo" : "Add Todo"}</button>
+        </form>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className='todo-list'>
+        {
+          todoItem.map((item) => (
+            <li key={item.id}>{item.todo}
+              <div className='list-btn'>
+                <button className='edit' onClick={() => handleEdit(item.id)}>Edit</button>
+                <button className='delete' onClick={() => deleteTodo(item.id)}>Delete</button>
+              </div>
+            </li>
+          ))
+        }
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   )
 }
 
-export default App
+export default App;
