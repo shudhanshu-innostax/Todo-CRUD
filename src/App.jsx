@@ -3,15 +3,26 @@ import './App.css'
 
 function App() {
   const [inputData, setInputData] = useState('');
-  const [todoItem, setTodoItem] = useState([]);
+  const [todoItem, setTodoItem] = useState([]);  
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (inputData !== '') {
-      setTodoItem([...todoItem, inputData]);
+      const newTodo = {
+        id: todoItem.length + 1,
+        todo: inputData
+      }
+      setTodoItem([...todoItem, newTodo]);
       setInputData('')
     }
 
+  }
+
+  const deleteTodo = (id) => {
+    const removeItem = todoItem.filter((todo)=> {
+      return todo.id !== id;
+    })
+    setTodoItem(removeItem)
   }
 
   return (
@@ -25,8 +36,13 @@ function App() {
       </div>
       <div className='todo-list'>
         {
-          todoItem.map((item,index) => (
-            <h2 key={index}>{item}</h2>
+          todoItem.map((item) => (
+            <li key={item.id}>{item.todo}
+              <div className='list-btn'>
+              <button className='edit'>Edit</button> 
+              <button className='delete' onClick={()=>deleteTodo(item.id)}>Delete</button>
+              </div>
+            </li>
           ))
         }
       </div>

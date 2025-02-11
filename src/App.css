@@ -5,3 +5,63 @@
   background-color: black;
   color: white;
 }
+
+.todo-form{
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.todo-form form{
+  display: flex;
+  gap: 50px;
+
+}
+
+input{
+  padding: 5px;
+  border-radius: 5px;
+  width: 300px;
+}
+
+button{
+  padding: 8px;
+  font-weight: 700;
+  color: white;
+  background-color: green;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+
+li{
+  list-style: none;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: beige;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.todo-list{
+  width: 800px;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.delete{
+  background-color: rgb(224, 15, 15);
+}
+
+.list-btn{
+  display: flex;
+  gap: 20px;
+}
+
+.edit{
+  background-color: blueviolet;
+}
